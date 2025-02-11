@@ -1,0 +1,170 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        color: #333;
+    }
+
+    .form-label {
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #0056b3; /* Azul oscuro */
+    }
+
+    .form-control {
+        border: 2px solid #66cdaa;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 1em;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background-color: #66cdaa;
+        color: #fff;
+    }
+
+    .btn-danger {
+        background-color: #d32f2f;
+        border: none;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+    }
+
+    .btn-danger:hover {
+        background-color: #b71c1c;
+        color: #fff;
+    }
+
+    h3 {
+        font-size: 2em;
+        font-weight: bold;
+        text-align: center;
+        color: #ff4500;
+    }
+
+    .border {
+        background-color: #ffffff;
+        border-color: #66cdaa;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Actualizar Reforma</h3>
+        <form action="/procesarEdicionreforma/" id="frm_editar_reforma" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Campo oculto para el ID -->
+            <input type="hidden" name="id" value="{{ reforma.id }}">
+
+            <!-- Oficina -->
+            <div class="mb-3">
+                <label for="oficina" class="form-label"><b>Oficina:</b></label>
+                <select name="oficina" id="oficina" class="form-control">
+                    {% for oficina in oficinas %}
+                        <option value="{{ oficina.id }}" {% if reforma.oficina.id == oficina.id %}selected{% endif %}>
+                            {{ oficina.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Contratista -->
+            <div class="mb-3">
+                <label for="contratista" class="form-label"><b>Contratista:</b></label>
+                <select name="contratista" id="contratista" class="form-control">
+                    {% for contratista in contratistas %}
+                        <option value="{{ contratista.id }}" {% if reforma.contratista.id == contratista.id %}selected{% endif %}>
+                            {{ contratista.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Fecha de Inicio -->
+            <div class="mb-3">
+                <label for="fecha_inicio" class="form-label"><b>Fecha de Inicio:</b></label>
+                <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="{{ reforma.fecha_inicio|date:'Y-m-d' }}">
+            </div>
+
+            <!-- Fecha de Fin -->
+            <div class="mb-3">
+                <label for="fecha_fin" class="form-label"><b>Fecha de Fin:</b></label>
+                <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" value="{{ reforma.fecha_fin|date:'Y-m-d' }}">
+            </div>
+
+            <!-- Presupuesto -->
+            <div class="mb-3">
+                <label for="presupuesto" class="form-label"><b>Presupuesto:</b></label>
+                <input type="number" name="presupuesto" id="presupuesto" class="form-control" value="{{ reforma.presupuesto }}" step="0.01">
+            </div>
+
+            <!-- Suministros -->
+            <div class="mb-3">
+                <label for="suministros" class="form-label"><b>Suministros:</b></label>
+                <select name="suministros" id="suministros" class="form-control" multiple>
+                    {% for suministro in suministros %}
+                        <option value="{{ suministro.id }}" {% if suministro in reforma.suministros.all %}selected{% endif %}>
+                            {{ suministro.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Observación -->
+            <div class="mb-3">
+                <label for="observacion" class="form-label"><b>Observación:</b></label>
+                <textarea name="observacion" id="observacion" class="form-control">{{ reforma.observacion }}</textarea>
+            </div>
+
+            <!-- Evidencia -->
+            <div class="mb-3">
+                <label for="evidencia" class="form-label"><b>Archivo de Evidencia:</b></label>
+                <input type="file" name="evidencia" id="evidencia" class="form-control">
+                {% if reforma.evidencia %}
+                    <p>Archivo actual: <a href="{{ reforma.evidencia.url }}" target="_blank">{{ reforma.evidencia.name }}</a></p>
+                {% endif %}
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label"><b>Email de Contacto:</b></label>
+                <input type="email" name="email" id="email" class="form-control" value="{{ reforma.email }}">
+            </div>
+
+            <!-- Teléfono -->
+            <div class="mb-3">
+                <label for="telefono" class="form-label"><b>Teléfono de Contacto:</b></label>
+                <input type="text" name="telefono" id="telefono" class="form-control" value="{{ reforma.telefono }}">
+            </div>
+
+            <!-- Finalizado -->
+            <div class="mb-3 form-check">
+                <input type="checkbox" name="finalizado" id="finalizado" class="form-check-input" {% if reforma.finalizado %}checked{% endif %}>
+                <label for="finalizado" class="form-check-label"><b>¿Reforma Finalizada?</b></label>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary me-2">Actualizar</button>
+                <a href="/listareforma/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

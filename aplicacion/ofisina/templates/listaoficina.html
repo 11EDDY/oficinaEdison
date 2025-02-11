@@ -1,0 +1,73 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Contenedor con borde y sombra para la tabla -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center" style="color: #FF4500; font-family: 'Algerian', sans-serif;">Lista de Oficinas</h3>
+
+        <!-- Tabla de oficinas -->
+        <table class="table table-bordered table-striped table-hover" id="tbl_oficinas">
+            <thead class="table-dark">
+                <tr>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">ID</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Nombre</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Dirección</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Capacidad</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Foto</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for oficina in oficinas %}
+                <tr>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ oficina.id }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ oficina.nombre }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ oficina.direccion }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ oficina.capacidad }}</td>
+                    <td>
+                        {% if oficina.foto %}
+                            <img src="{{ oficina.foto.url }}" alt="Foto de {{ oficina.nombre }}" class="img-thumbnail" width="100">
+                        {% else %}
+                            <p style="font-family: 'Algerian', sans-serif;">No hay foto disponible</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/editaroficina/{{ oficina.id }}" class="btn" style="background-color: #FF6347;color: white; font-family: 'Algerian', sans-serif;">Editar</a>
+                        <a onclick="return confirm('¿Está seguro de eliminar permanentemente?')" href="/eliminaroficina/{{ oficina.id }}" class="btn" style="background-color: #008000;  color: white; font-family: 'Algerian', sans-serif;">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Agregar las librerías necesarias para DataTables y sus botones -->
+{% block scripts %}
+    <!-- Estilos de DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
+    <!-- Scripts de DataTables -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vfs_fonts/2.0.0/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Inicializamos el DataTable con los botones de exportación
+            $('#tbl_oficinas').DataTable({
+                dom: 'Bfrtip',  // Esto agrega los botones
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'  // Botones que aparecerán
+                ]
+            });
+        });
+    </script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<style>
+    /* Fuente general para toda la página */
+    body {
+        font-family: 'Algerian', serif;
+        color: #00ff00; /* Verde puro */
+    }
+
+    /* Estilo general para las etiquetas */
+    .form-label {
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #00ff00; /* Verde puro */
+    }
+
+    /* Estilo para los campos del formulario */
+    .form-control {
+        border: 2px solid #66cdaa; /* Aguamarina claro */
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 1em;
+    }
+
+    /* Cambios al enfocar un campo */
+    .form-control:focus {
+        border-color: #20b2aa; /* Aguamarina */
+        box-shadow: 0 0 5px rgba(32, 178, 170, 0.5);
+    }
+
+    /* Botones */
+    .btn-warning {
+        background-color: #20b2aa; /* Aguamarina */
+        border: none;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+    }
+
+    .btn-warning:hover {
+        background-color: #66cdaa; /* Aguamarina claro */
+        color: #fff;
+    }
+
+    .btn-danger {
+        background-color: #d32f2f; /* Rojo */
+        border: none;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+    }
+
+    .btn-danger:hover {
+        background-color: #b71c1c; /* Rojo más oscuro */
+        color: #fff;
+    }
+
+    /* Estilo para el título */
+    h3 {
+        font-family: 'Algerian', serif;
+        color: #ff4500; /* Rojo naranja */
+        font-size: 2em;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    /* Fondo y bordes del contenedor */
+    .border {
+        background-color: #ffffff; /* Blanco */
+        border-color: #66cdaa; /* Aguamarina claro */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Algerian&display=swap" rel="stylesheet">
+
+<div class="container mt-5">
+    <!-- Contenedor con borde y sombra para el formulario -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Actualizar Contratista</h3>
+        <form action="/procesarEdicioncontratista/" id="frm_editar_contratista" method="post">
+            {% csrf_token %}
+
+            <!-- Campo oculto para el ID -->
+            <div class="mb-3">
+                <label for="id" class="form-label"><b>ID:</b></label>
+                <input type="hidden" name="id" value="{{ contratista.id }}">
+                <input type="text" class="form-control" id="id" value="{{ contratista.id }}" readonly>
+            </div>
+
+            <!-- Nombre del Contratista -->
+            <div class="mb-3">
+                <label for="nombre" class="form-label"><b>Nombre del Contratista:</b></label>
+                <input type="text" name="nombre" id="nombre" class="form-control" value="{{ contratista.nombre }}">
+            </div>
+
+            <!-- Teléfono -->
+            <div class="mb-3">
+                <label for="telefono" class="form-label"><b>Teléfono:</b></label>
+                <input type="text" name="telefono" id="telefono" class="form-control" value="{{ contratista.telefono }}">
+            </div>
+
+            <!-- Correo electrónico -->
+            <div class="mb-3">
+                <label for="email" class="form-label"><b>Correo electrónico:</b></label>
+                <input type="email" name="email" id="email" class="form-control" value="{{ contratista.email }}">
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-warning me-2">Actualizar</button>
+                <a href="/listacontratista/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

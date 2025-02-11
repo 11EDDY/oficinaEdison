@@ -1,0 +1,85 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Contenedor con borde y sombra para la tabla -->
+    <div class="border p-4 rounded-3 shadow-lg bg-light">
+        <h3 class="mb-4 text-center" style="color: #FF4500; font-family: 'Algerian', sans-serif;">Lista de Reformas</h3>
+
+        <!-- Tabla de reformas -->
+        <table class="table table-bordered table-striped table-hover" id="tbl_reformas">
+            <thead class="table-dark">
+                <tr>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">ID</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Oficina</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Contratista</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Fecha Inicio</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Fecha Fin</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Presupuesto</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Observación</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Evidencia</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Correo</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Teléfono</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">Finalizado</th>
+                    <th style="color: #008000; font-family: 'Algerian', sans-serif;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reforma in reformas %}
+                <tr>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ reforma.id }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ reforma.oficina.nombre }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ reforma.contratista.nombre }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ reforma.fecha_inicio }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ reforma.fecha_fin }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ reforma.presupuesto }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ reforma.observacion }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">
+                        {% if reforma.evidencia %}
+                            <a href="{{ reforma.evidencia.url }}" target="_blank" class="btn btn-info btn-sm" style="background-color: #FF6347; color: white;">Ver evidencia</a>
+                        {% else %}
+                            <p class="text-muted">No disponible</p>
+                        {% endif %}
+                    </td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ reforma.email }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ reforma.telefono }}</td>
+                    <td style="font-family: 'Algerian', sans-serif;">{{ reforma.finalizado|yesno:"Sí,No" }}</td>
+                    <td>
+                        <a href="/editarreforma/{{reforma.id }}" class="btn btn-warning btn-sm" style="background-color: #FF6347;color: white; font-family: 'Algerian', sans-serif;">Editar</a>
+                        <a onclick="return confirm('¿Está seguro de eliminar permanentemente?')" href="/eliminarreforma/{{ reforma.id }}" class="btn btn-danger btn-sm" style="background-color: #008000;  color: white;">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Agregar las librerías necesarias para DataTables y sus botones -->
+{% block scripts %}
+    <!-- Estilos de DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
+    <!-- Scripts de DataTables -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vfs_fonts/2.0.0/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Inicializamos el DataTable con los botones de exportación
+            $('#tbl_reformas').DataTable({
+                dom: 'Bfrtip',  // Esto agrega los botones
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'  // Botones que aparecerán
+                ]
+            });
+        });
+    </script>
+{% endblock %}
+{% endblock %}

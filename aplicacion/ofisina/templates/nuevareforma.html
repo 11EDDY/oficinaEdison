@@ -1,0 +1,89 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center" style="color: #FF4500; font-family: 'Algerian', sans-serif;">Registrar Nueva Reforma</h3>
+
+        <!-- Formulario para registrar una nueva reforma -->
+        <form id="formReforma" enctype="multipart/form-data" action="/guardarreforma/" method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="oficina" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Oficina:</b></label>
+                <select name="oficina" id="oficina" class="form-control" style="font-family: 'Algerian', sans-serif;" required>
+                    {% for oficina in oficinas %}
+                        <option value="{{ oficina.id }}">{{ oficina.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="contratista" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Contratista:</b></label>
+                <select name="contratista" id="contratista" class="form-control" style="font-family: 'Algerian', sans-serif;" required>
+                    {% for contratista in contratistas %}
+                        <option value="{{ contratista.id }}">{{ contratista.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="fecha_inicio" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Fecha de Inicio:</b></label>
+                <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" style="font-family: 'Algerian', sans-serif;" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="fecha_fin" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Fecha de Finalización:</b></label>
+                <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" style="font-family: 'Algerian', sans-serif;" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="presupuesto" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Presupuesto (USD):</b></label>
+                <input type="number" name="presupuesto" id="presupuesto" class="form-control" step="0.01" style="font-family: 'Algerian', sans-serif;" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="suministros" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Suministros:</b></label>
+                <select name="suministros" id="suministros" class="form-control" multiple style="font-family: 'Algerian', sans-serif;">
+                    {% for suministro in suministros %}
+                        <option value="{{ suministro.id }}">{{ suministro.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <small class="text-muted" style="font-family: 'Algerian', sans-serif;">Mantén presionada la tecla Ctrl para seleccionar varios.</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="observacion" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Observaciones:</b></label>
+                <textarea name="observacion" id="observacion" class="form-control" rows="3" style="font-family: 'Algerian', sans-serif;"></textarea>
+            </div>
+
+            
+
+            <div class="mb-3">
+                <label for="evidencia" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Evidencia (PDF, Word, Excel):</b></label>
+                <input type="file" name="evidencia" id="evidencia" class="form-control" accept=".pdf, .doc, .docx, .xls, .xlsx" style="font-family: 'Algerian', sans-serif;">
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Correo Electrónico:</b></label>
+                <input type="email" name="email" id="email" class="form-control" style="font-family: 'Algerian', sans-serif;" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="telefono" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Teléfono:</b></label>
+                <input type="text" name="telefono" id="telefono" class="form-control" maxlength="15" style="font-family: 'Algerian', sans-serif;" required>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" name="finalizado" id="finalizado" class="form-check-input">
+                <label for="finalizado" class="form-check-label" style="font-family: 'Algerian', sans-serif;"><b>Marcar como finalizado</b></label>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn" style="background-color: #7247ff; color: white; font-family: 'Algerian', sans-serif;">Registrar</button>
+                <a href="/listareforma/" class="btn" style="background-color: #FF6347; color: white; font-family: 'Algerian', sans-serif;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

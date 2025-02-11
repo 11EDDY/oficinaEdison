@@ -1,0 +1,183 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<style>
+    /* Fuente general para toda la página */
+    body {
+        font-family: 'Algerian', serif;
+        color: #00ff00; /* Verde puro */
+    }
+
+    /* Estilo general para las etiquetas */
+    .form-label {
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #00ff00; /* Verde puro */
+    }
+
+    /* Estilo para los campos del formulario */
+    .form-control {
+        border: 2px solid #66cdaa; /* Aguamarina claro */
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 1em;
+    }
+
+    /* Cambios al enfocar un campo */
+    .form-control:focus {
+        border-color: #20b2aa; /* Aguamarina */
+        box-shadow: 0 0 5px rgba(32, 178, 170, 0.5);
+    }
+
+    /* Botones */
+    .btn-warning {
+        background-color: #20b2aa; /* Aguamarina */
+        border: none;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+    }
+
+    .btn-warning:hover {
+        background-color: #66cdaa; /* Aguamarina claro */
+        color: #fff;
+    }
+
+    .btn-danger {
+        background-color: #d32f2f; /* Rojo */
+        border: none;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+    }
+
+    .btn-danger:hover {
+        background-color: #b71c1c; /* Rojo más oscuro */
+        color: #fff;
+    }
+
+    /* Estilo para el título */
+    h3 {
+        font-family: 'Algerian', serif;
+        color: #ff4500; /* Rojo naranja */
+        font-size: 2em;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    /* Fondo y bordes del contenedor */
+    .border {
+        background-color: #ffffff; /* Blanco */
+        border-color: #66cdaa; /* Aguamarina claro */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilos para la zona de arrastre */
+    .file-dropzone {
+        border: 2px dashed #20b2aa;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        margin-top: 10px;
+        color: #20b2aa;
+        transition: border-color 0.3s ease;
+    }
+
+    .file-dropzone:hover {
+        border-color: #007bff;
+    }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Algerian&display=swap" rel="stylesheet">
+
+<div class="container mt-5">
+    <!-- Contenedor con borde y sombra para el formulario -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Actualizar Suministro</h3>
+        <form action="/procesarEdicionsuministro/" id="frm_editar_suministro" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Campo oculto para el ID -->
+            <div class="mb-3">
+                <label for="id" class="form-label"><b>ID:</b></label>
+                <input type="hidden" name="id" value="{{ suministro.id }}">
+                <input type="text" class="form-control" id="id" value="{{ suministro.id }}" readonly>
+            </div>
+
+            <!-- Nombre del Suministro -->
+            <div class="mb-3">
+                <label for="nombre" class="form-label"><b>Nombre del Suministro:</b></label>
+                <input type="text" name="nombre" id="nombre" class="form-control" value="{{ suministro.nombre }}">
+            </div>
+
+            <!-- Descripción del Suministro -->
+            <div class="mb-3">
+                <label for="descripcion" class="form-label"><b>Descripción:</b></label>
+                <textarea name="descripcion" id="descripcion" class="form-control">{{ suministro.descripcion }}</textarea>
+            </div>
+
+            <!-- Costo del Suministro -->
+            <div class="mb-3">
+                <label for="costo" class="form-label"><b>Costo:</b></label>
+                <input type="number" name="costo" id="costo" class="form-control" value="{{ suministro.costo }}" min="0.01" step="0.01">
+            </div>
+
+            <!-- Evidencia (Archivo) -->
+            <div class="mb-3">
+                <label for="evidencia" class="form-label"><b>Evidencia (Archivo):</b></label>
+                <input type="file" name="evidencia" id="evidencia" class="form-control d-none" accept=".pdf, .doc, .docx, .xls, .xlsx">
+
+                <!-- Zona de arrastre personalizada -->
+                <div id="file-dropzone" class="file-dropzone">
+                    <p>Arrastra y suelta tu archivo aquí o haz clic para seleccionar uno.</p>
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-warning me-2">Actualizar</button>
+                <a href="/listasuministro/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Obtener la zona de arrastre y el input de archivo
+    const dropzone = document.getElementById('file-dropzone');
+    const fileInput = document.getElementById('evidencia');
+
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = '#007bff';
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+        dropzone.style.borderColor = '#20b2aa';
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = '#20b2aa';
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            dropzone.querySelector('p').textContent = files[0].name;
+        }
+    });
+
+    dropzone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            dropzone.querySelector('p').textContent = fileInput.files[0].name;
+        }
+    });
+</script>
+
+{% endblock %}

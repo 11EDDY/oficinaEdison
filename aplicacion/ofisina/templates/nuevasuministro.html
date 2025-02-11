@@ -1,0 +1,82 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <!-- Añadimos clases de Bootstrap para centrar y darle borde al formulario -->
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center" style="color: #FF4500; font-family: 'Algerian', sans-serif;">Registrar Nuevo Suministro</h3>
+
+        <!-- Formulario para registrar un nuevo suministro -->
+        <form id="formSuministro" enctype="multipart/form-data" action="/guardarsuministro/" method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="txt_nombre" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Nombre del Suministro:</b></label>
+                <input type="text" name="nombre" id="txt_nombre" class="form-control" style="font-family: 'Algerian', sans-serif;" required aria-label="Nombre del Suministro">
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_descripcion" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Descripción:</b></label>
+                <input type="text" name="descripcion" id="txt_descripcion" class="form-control" style="font-family: 'Algerian', sans-serif;" required aria-label="Descripción del suministro">
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_costo" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Costo:</b></label>
+                <input type="number" name="costo" id="txt_costo" class="form-control" step="0.01" style="font-family: 'Algerian', sans-serif;" required aria-label="Costo del suministro">
+            </div>
+
+            <div class="mb-3">
+                <label for="txt_evidencia" class="form-label" style="color: #008000; font-family: 'Algerian', sans-serif;"><b>Evidencia (PDF, Word, Excel):</b></label>
+                <div id="file-dropzone" class="form-control border p-4 text-center" style="cursor: pointer; font-family: 'Algerian', sans-serif;">
+                    <p>Arrastra y suelta los archivos aquí, o haz clic para seleccionar.</p>
+                    <input type="file" name="evidencia" id="txt_evidencia" class="d-none" accept=".pdf,.doc,.docx,.xls,.xlsx" required aria-label="Evidencia del suministro">
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn" style="background-color: #7247ff; color: white; font-family: 'Algerian', sans-serif;">Registrar </button>
+                <a href="/listasuministro/" class="btn" style="background-color: #FF6347; color: white; font-family: 'Algerian', sans-serif;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Obtener el área de arrastre y el campo de archivo
+    const dropzone = document.getElementById('file-dropzone');
+    const fileInput = document.getElementById('txt_evidencia');
+
+    // Cambiar el texto cuando el archivo es arrastrado sobre la zona
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = '#007bff';
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+        dropzone.style.borderColor = '';
+    });
+
+    // Cuando un archivo es soltado
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = '';
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            dropzone.querySelector('p').textContent = files[0].name;
+        }
+    });
+
+    // Permitir que el usuario haga clic para seleccionar un archivo
+    dropzone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Cuando se selecciona un archivo, actualizar el nombre del archivo en la zona
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            dropzone.querySelector('p').textContent = fileInput.files[0].name;
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends "./plantilla.html" %}
+
+{% block contenido %}
+<style>
+    /* Fuente y colores */
+    body {
+        font-family: 'Georgia', serif;
+        color: #008000; /* Verde oscuro */
+    }
+
+    /* Etiquetas */
+    .form-label {
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #008000;
+    }
+
+    /* Campos de formulario */
+    .form-control {
+        border: 2px solid #66cdaa;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 1em;
+    }
+
+    .form-control:focus {
+        border-color: #20b2aa;
+        box-shadow: 0 0 5px rgba(32, 178, 170, 0.5);
+    }
+
+    /* Botones */
+    .btn-warning {
+        background-color: #20b2aa;
+        border: none;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+    }
+
+    .btn-warning:hover {
+        background-color: #66cdaa;
+    }
+
+    .btn-danger {
+        background-color: #d32f2f;
+        border: none;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+    }
+
+    .btn-danger:hover {
+        background-color: #b71c1c;
+    }
+
+    /* Título */
+    h3 {
+        font-family: 'Georgia', serif;
+        color: #ff4500;
+        font-size: 2em;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    /* Contenedor */
+    .border {
+        background-color: #ffffff;
+        border-color: #66cdaa;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo para zona de arrastre */
+    .dropzone {
+        border: 2px dashed #20b2aa;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        color: #008000;
+    }
+
+    .dropzone:hover {
+        background-color: #f0f8ff;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="border p-4 rounded-3 shadow-lg">
+        <h3 class="mb-4 text-center">Actualizar Oficina</h3>
+
+        <form action="/procesarEdicionoficina/" id="frm_editar_oficina" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- ID oculto -->
+            <input type="hidden" name="id" value="{{ oficina.id }}">
+
+            <!-- Nombre -->
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre de la Oficina:</label>
+                <input type="text" name="nombre" id="nombre" class="form-control" value="{{ oficina.nombre }}" required maxlength="100">
+            </div>
+
+            <!-- Dirección -->
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección:</label>
+                <input type="text" name="direccion" id="direccion" class="form-control" value="{{ oficina.direccion }}" required maxlength="255">
+            </div>
+
+            <!-- Capacidad -->
+            <div class="mb-3">
+                <label for="capacidad" class="form-label">Capacidad:</label>
+                <input type="number" name="capacidad" id="capacidad" class="form-control" value="{{ oficina.capacidad }}" required min="1">
+            </div>
+
+            <!-- Foto -->
+            <div class="mb-3">
+                <label for="foto" class="form-label">Foto de la Oficina:</label>
+                <div id="file-dropzone" class="dropzone">
+                    <p>Arrastra y suelta la imagen aquí, o haz clic para seleccionar.</p>
+                    <input type="file" name="foto" id="foto" class="d-none" accept="image/*">
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-warning me-2">Actualizar</button>
+                <a href="/listaoficina/" class="btn btn-danger">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Obtener la zona de arrastre y el input de archivo
+    const dropzone = document.getElementById('file-dropzone');
+    const fileInput = document.getElementById('foto');
+
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = '#007bff';
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+        dropzone.style.borderColor = '';
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.style.borderColor = '';
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            dropzone.querySelector('p').textContent = files[0].name;
+        }
+    });
+
+    dropzone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            dropzone.querySelector('p').textContent = fileInput.files[0].name;
+        }
+    });
+</script>
+
+{% endblock %}

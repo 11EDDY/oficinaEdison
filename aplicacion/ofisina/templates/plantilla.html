@@ -1,0 +1,246 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Matriculas</title>
+    
+    
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'plantilla/lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'plantilla/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'plantilla/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{% static 'plantilla/css/style.css' %}" rel="stylesheet">
+
+    <!-- Importando iziToast -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css" integrity="sha512-DIW4FkYTOxjCqRt7oS9BFO+nVOwDL4bzukDyDtMO7crjUZhwpyrWBFroq+IqRe6VnJkTpRAS6nhDvf0w+wHmxg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Estilos de DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+    <!-- JavaScript de jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- JavaScript de DataTables -->
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid bg-dark text-light p-0">
+        <div class="row gx-0 d-none d-lg-flex">
+            <div class="col-lg-7 px-5 text-start">
+                <div class="h-100 d-inline-flex align-items-center me-4">
+                    <small class="fa fa-map-marker-alt text-primary me-2"></small>
+                    <small>+593, ECUADOR, ECU</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center">
+                    <small class="far fa-clock text-primary me-2"></small>
+                    <small>LUNAS - DOMINGO : 09.00 AM - 09.00 PM</small>
+                </div>
+            </div>
+            <div class="col-lg-5 px-5 text-end">
+                <div class="h-100 d-inline-flex align-items-center me-4">
+                    <small class="fa fa-phone-alt text-primary me-2"></small>
+                    <small>+593 992965462</small>
+                </div>
+                <div class="h-100 d-inline-flex align-items-center mx-n2">
+                    <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-square btn-link rounded-0" href=""><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+      <a href="/" class="navbar-brand d-flex align-items-center border-end px-4 px-lg-5">
+          <h2 class="m-0"><i class="fa fa-start text-primary me-2"></i>BIENVENIDOS</h2>
+      </a>
+      <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Navbar Collapse (Menu) Pegado a la derecha -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    OFICINA
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/listaoficina/">Listado oficina</a></li>
+                    <li><a class="dropdown-item" href="/nuevaoficina/">Agregar oficina</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    CONTRATISTA
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/listacontratista/">Listado contratista</a></li>
+                    <li><a class="dropdown-item" href="/nuevacontratista/">Agregar contratista</a></li>
+                  </ul>
+            </li>
+            
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              SUMINISTRO
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/listasuministro/">Listado de suministro</a></li>
+              <li><a class="dropdown-item" href="/nuevasuministro/">Agregar suministro</a></li>
+              
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              REFORMA
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/listareforma/">Listado de reforma</a></li>
+              <li><a class="dropdown-item" href="/nuevareforma/">Agregar reforma </a></li>
+              
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                PDF
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/pdf/">LISTADO EN PDF</a></li>
+         
+              </ul>
+        </li>
+
+            
+        </ul>
+    </div>
+</div>
+  </nav>
+  <!-- Navbar End -->
+  
+<div class="container my-4">
+        {% block contenido %}
+        <!-- Aquí se cargará el contenido específico de cada página -->
+        {% endblock %}
+    </div>
+  <!-- Footer Start -->
+<div class="container-fluid bg-dark text-light footer my-6 mb-0 py-6 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-3 col-md-6">
+                <h4 class="text-white mb-4">Ponte en contacto</h4>
+                <h2 class="text-primary mb-4"><i class="fa fa-building text-white me-2"></i> Remodelaciones de Oficinas</h2>
+                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>+593 ECUADOR, ECU</p>
+                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+593 99 296 5462</p>
+                <p class="mb-2"><i class="fa fa-envelope me-3"></i>remodelaciones@informacion.com</p>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h4 class="text-light mb-4">Enlaces rápidos</h4>
+                <a class="btn btn-link" href="">Sobre nosotros</a>
+                <a class="btn btn-link" href="">Contacta a tu especialista</a>
+                <a class="btn btn-link" href="">Nuestros Servicios</a>
+                <a class="btn btn-link" href="">Planificación de Remodelaciones</a>
+                <a class="btn btn-link" href="">Soporte Técnico</a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h4 class="text-light mb-4">Enlaces populares</h4>
+                <a class="btn btn-link" href="">Proyectos Realizados</a>
+                <a class="btn btn-link" href="">Contacta a un Experto</a>
+                <a class="btn btn-link" href="">Proyectos en Curso</a>
+                <a class="btn btn-link" href="">Proceso de Remodelación</a>
+                <a class="btn btn-link" href="">Testimonios de Clientes</a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h4 class="text-light mb-4">Hoja informativa</h4>
+                <form action="">
+                    <div class="input-group">
+                        <input type="email" class="form-control p-3 border-0" placeholder="Tu Dirección de Correo">
+                        <button class="btn btn-primary">
+                          Inscribirse</button>
+                    </div>
+                </form>
+                <h6 class="text-white mt-4 mb-3">Síguenos en redes</h6>
+                <div class="d-flex pt-2">
+                    <a class="btn btn-square btn-outline-light me-1" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-square btn-outline-light me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-square btn-outline-light me-1" href=""><i class="fab fa-youtube"></i></a>
+                    <a class="btn btn-square btn-outline-light me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Footer End -->
+  
+  
+  <!-- Copyright Start -->
+  <div class="container-fluid copyright text-light py-4 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                &copy; <a href="#">Remodelaciones de Oficinas</a>, Todos los derechos reservados.
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                Diseñado por <a href="https://htmlcodex.com">EDDY PALLO</a>
+                <br>Distribuido por: <a href="https://themewagon.com" target="_blank">EDDY</a>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- Copyright End -->
+  
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'plantilla/lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'plantilla/lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'plantilla/lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'plantilla/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+    <!-- Verificando y mostrando mensajes de confirmación -->
+    {% if messages %}
+        {% for mensajeConfirmacion in messages %}
+        <script>
+            if("{{mensajeConfirmacion.tags}}" == "success") {
+                iziToast.success({
+                    title: 'Éxito',
+                    message: '{{mensajeConfirmacion}}',
+                    position: 'topRight'
+                });
+            }
+        </script>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
